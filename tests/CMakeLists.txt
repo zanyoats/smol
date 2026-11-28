@@ -13,7 +13,7 @@ FetchContent_Declare(Catch2
 )
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(smol_tests greeting.cpp persistent_list.cpp)
+add_executable(smol_tests greeting.cpp persistent_list.cpp forward_list.cpp)
 target_link_libraries(smol_tests PRIVATE smol::smol Catch2::Catch2WithMain)
 set_target_properties(smol_tests PROPERTIES CXX_EXTENSIONS OFF)
 

@@ -1,2 +1,3 @@
 add_subdirectory(greeting)
 add_subdirectory(persistent_list)
+add_subdirectory(forward_list)
