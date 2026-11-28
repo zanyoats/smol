@@ -1,0 +1,36 @@
+name: CI
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            compiler: g++
+            preset: debug
+          - os: ubuntu-latest
+            compiler: clang++
+            preset: sanitize
+          - os: ubuntu-latest
+            compiler: g++
+            preset: release
+          - os: macos-latest
+            compiler: clang++
+            preset: debug
+    runs-on: ${{ matrix.os }}
+    env:
+      CXX: ${{ matrix.compiler }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake --preset ${{ matrix.preset }}
+      - name: Build
+        run: cmake --build --preset ${{ matrix.preset }} --parallel 2
+      - name: Test
+        run: ctest --preset ${{ matrix.preset }}

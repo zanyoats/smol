@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "smol: Run active example",
+      "type": "process",
+      "command": "cmake",
+      "args": [
+        "-DSMOL_ACTIVE_FILE=${file}",
+        "-P",
+        "${workspaceFolder}/cmake/RunExample.cmake"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$gcc",
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "smol: Configure debug",
+      "type": "process",
+      "command": "cmake",
+      "args": ["--preset", "debug"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "smol: Build tests",
+      "type": "process",
+      "command": "cmake",
+      "args": ["--build", "--preset", "debug", "--target", "smol_tests", "--parallel"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "dependsOn": "smol: Configure debug",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "smol: Run tests",
+      "type": "process",
+      "command": "ctest",
+      "args": ["--preset", "debug"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "dependsOn": "smol: Build tests",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    }
+  ]
+}
